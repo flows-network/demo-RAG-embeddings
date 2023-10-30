@@ -7,6 +7,7 @@ use openai_flows::{
 use serde_json::{json, Value};
 use std::collections::HashMap;
 use std::str;
+use flowsnet_platform_sdk::logger;
 
 static CHAR_SOFT_LIMIT : usize = 20000;
 static CHAR_SOFT_MINIMUM : usize = 100;
@@ -19,6 +20,7 @@ pub async fn on_deploy() {
 
 #[request_handler]
 async fn handler(_headers: Vec<(String, String)>, qry: HashMap<String, Value>, body: Vec<u8>) {
+    logger::init();
     let collection_name = qry.get("collection_name").unwrap().as_str().unwrap();
     let vector_size = qry.get("vector_size").unwrap().as_str().unwrap();
     let vector_size : u64 = vector_size.parse().unwrap();
